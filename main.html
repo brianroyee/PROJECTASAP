@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project ASAP</title>
+    <style>
+        * {
+            
+            @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "JetBrains Mono", serif;
+            font-optical-sizing: auto;
+            cursor: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #001F3F 0%, #000033 50%, #000000 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 180, 216, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-glow {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 180, 216, 0.15);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.2s ease;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-particle {
+            position: absolute;
+            background: rgba(9, 67, 160, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 3rem;
+            align-items: start;
+            padding: 2rem;
+        }
+
+        .poster-container {
+            flex: 1;
+            max-width: 400px;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .poster {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .content {
+            flex: 2;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00B4D8;
+        }
+
+        .details {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .details:hover, .registration-info:hover, .objectives:hover, .takeaways:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 180, 216, 0.2);
+        }
+
+        .details h2 {
+            color: #00B4D8;
+            margin-bottom: 1rem;
+        }
+
+        .details p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .registration-info {
+            background: rgba(0, 180, 216, 0.15);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 2px solid #00B4D8;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .registration-info h2 {
+            color: #00B4D8;
+            margin-bottom: 1rem;
+        }
+
+        .objectives, .takeaways {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .objectives h2, .takeaways h2 {
+            color: #00B4D8;
+            margin-bottom: 1.5rem;
+        }
+
+        .objective-item, .takeaway-item {
+            display: flex;
+            align-items: start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .icon {
+            min-width: 24px;
+            height: 24px;
+            background: #00B4D8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .register-btn {
+            background: #00B4D8;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .register-btn:hover {
+            background: #0096c7;
+        }
+
+        .prize-pool {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .highlight {
+            color: #00B4D8;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .poster-container {
+                max-width: 300px;
+                margin: 0 auto;
+                position: relative;
+            }
+
+            .objective-item, .takeaway-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-glow"></div>
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <div class="container">
+        <div class="poster-container">
+            <div class="poster">
+                <img src="WhatsApp Image 2025-01-14 at 01.02.34.jpeg" alt="Event Poster" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+        <div class="content">
+            <h1>Project ASAP: Acquire Skills, Achieve Projects</h1>
+            
+            <div class="details">
+                <h2>Event Details</h2>
+                <p><strong>Date:</strong> 15 - 17 January</p>
+                <p><strong>Time:</strong> 7 PM everyday</p>
+                <p><strong>Mode:</strong> Online (Google Meet)</p>
+            </div>
+
+            <div class="registration-info">
+                <h2>Registration Details</h2>
+                <p><span class="highlight">Team Size:</span> 2-3 members</p>
+                <p><span class="highlight">Registration Fee:</span> <u>₹80 per team</u></p>
+                <p><em><br>Note:<br> Registration is only possible for teams. Solo participants will need to form or join a team.</em></p>
+            </div>
+
+            <div class="prize-pool">
+                🏆 ₹500 Prize Pool: for Most Creative & Impactful Project! 🏆
+            </div>
+
+            <div class="objectives">
+                <h2>Objectives</h2>
+                <div class="objective-item">
+                    <div class="icon">🎯</div>
+                    <div>Equip participants with essential programming and version control skills to tackle real-world problems</div>
+                </div>
+                <div class="objective-item">
+                    <div class="icon">💡</div>
+                    <div>Foster an environment that encourages out-of-the-box thinking and innovation in project development</div>
+                </div>
+                <div class="objective-item">
+                    <div class="icon">👨‍💻</div>
+                    <div>Enable participants to apply their knowledge practically by building projects using Python</div>
+                </div>
+                <div class="objective-item">
+                    <div class="icon">⚡</div>
+                    <div>Enhance technical skills, helping participants approach projects with confidence and precision</div>
+                </div>
+            </div>
+
+            <div class="takeaways">
+                <h2>Key Takeaways</h2>
+                <div class="takeaway-item">
+                    <div class="icon">🐍</div>
+                    <div><strong>Python Wizardry:</strong> Get those mad Python skills—loops, file handling, and data structures? You'll slay it all.</div>
+                </div>
+                <div class="takeaway-item">
+                    <div class="icon">🌲</div>
+                    <div><strong>Git Good:</strong> No more "I lost my project!" vibes—Git and version control got your back for ultimate collab flex.</div>
+                </div>
+                <div class="takeaway-item">
+                    <div class="icon">🧠</div>
+                    <div><strong>Big Brain Energy:</strong> Creative thinking and brainstorming? You'll be throwing ideas like a pro at a hackathon.</div>
+                </div>
+                <div class="takeaway-item">
+                    <div class="icon">🚀</div>
+                    <div><strong>Build & Brag:</strong> Walk out with a project so cool you'll wanna pin it to your Insta bio.</div>
+                </div>
+                <div class="takeaway-item">
+                    <div class="icon">📜</div>
+                    <div><strong>Clout Certified:</strong> Earn a certificate to flex on LinkedIn (and mom)</div>
+                </div>
+            </div>
+
+            <a href="https://docs.google.com/forms/d/1eaPK52-i22Gbo0P4oXDsOMXeXzyB9NjttDJgqE-a6V4/edit?chromeless=1" class="register-btn">Register Now</a>
+        </div>
+    </div>
+
+    <script>
+        // Custom cursor effect
+        const cursor = document.querySelector('.cursor');
+        const cursorGlow = document.querySelector('.cursor-glow');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            cursorGlow.style.left = e.clientX - 15 + 'px';
+            cursorGlow.style.top = e.clientY - 15 + 'px';
+        });
+
+        // Hover effect for clickable elements
+        document.querySelectorAll('a, button').forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(1.5)';
+                cursorGlow.style.transform = 'scale(1.5)';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursorGlow.style.transform = 'scale(1)';
+            });
+        });
+
+        // Create floating background particles
+        const bgAnimation = document.getElementById('bgAnimation');
+        
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'bg-particle';
+            
+            const size = Math.random() * 20 + 10;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = '100vh';
+            
+            particle.style.animationDuration = `${Math.random() * 10 + 5}s`;
+            
+            bgAnimation.appendChild(particle);
+            
+            particle.addEventListener('animationend', () => {
+                particle.remove();
+            });
+        }
+
+        setInterval(createParticle, 1000);
+    </script>
+</body>
+</html>
